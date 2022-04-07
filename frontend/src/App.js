@@ -8,6 +8,9 @@ const UNSPLASH_KEY = process.env.REACT_APP_UNSPLASH_KEY;
 
 function App() {
   const [word,setWord] = useState('');
+  const[images,SetImages] = useState([]);
+
+  console.log(images);
 
   const HandleSearchSubmit = (e)=>{ 
     e.preventDefault();
@@ -16,6 +19,8 @@ function App() {
     .then((res) =>res.json())
     .then((data) => {
       console.log(data);
+      SetImages([data,...images]);
+     
     })
     .catch((err) =>{
       console.log(err);
