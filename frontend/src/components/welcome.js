@@ -1,8 +1,12 @@
 import React from "react";
 import { Jumbotron, Button } from "react-bootstrap";
 
+const navbarStyle = {
+  backgroundColor: "#eeeeee",
+};
+
 const Welcome = () => (
-  <Jumbotron>
+  <Jumbotron style={navbarStyle}>
     <h1>Images Gallery</h1>
     <p>
       This is simple application that retrieves photos using Unsplash API. In
