@@ -6,6 +6,5 @@
     ],
     "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true 
-    },
-    "pyhton.pythonPath":"api/.venv/scripts/python"
+    }
 }
