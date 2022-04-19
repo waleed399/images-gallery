@@ -1,4 +1,5 @@
 # save this as app.py
+from distutils.debug import DEBUG
 import os
 import requests
 from platform import freedesktop_os_release
@@ -11,11 +12,13 @@ print(os.environ.get('UNSPLASH_KEY', ''))
 
 UNSPLASH_URL='https://api.unsplash.com/photos/random'
 UNSPLASH_KEY=os.environ.get('UNSPLASH_KEY', '')
+DEBUG = bool(os.environ.get("DEBUG",True))
 
 if not UNSPLASH_KEY:
     raise EnvironmentError('Please create .env.local file and insert UNSPLASH_KEY')
 
 app = Flask(__name__)
+app.config['DEBUG'] = DEBUG
 
 @app.route("/new-image")
 def new_image():
