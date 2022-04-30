@@ -3,10 +3,13 @@ from distutils.debug import DEBUG
 import os
 import requests
 from platform import freedesktop_os_release
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from dotenv import load_dotenv
 from flask_cors import CORS
+from mongo_client import mongo_client
 
+gallery = mongo_client.gallery
+images_collection = gallery.images
 
 load_dotenv(dotenv_path="./.env.local")
 print(os.environ.get("UNSPLASH_KEY", ""))
@@ -31,6 +34,21 @@ def new_image():
     response = requests.get(url=UNSPLASH_URL, headers=headers, params=params)
     data = response.json()
     return data
+
+
+@app.route("/images", methods=["GET", "POST"])
+def images():
+    if request.method == "GET":
+        # READ images from DB
+        images = images_collection.find({})
+        return jsonify([img for img in images])
+    if request.method == "POST":
+        # SAVE image to DB
+        image = request.get_json()
+        image["_id"] = image.get("id")
+        result = images_collection.insert_one(image)
+        inserted_id = result.inserted_id
+        return {"inserted_id": inserted_id}
 
 
 if __name__ == "__main__":
