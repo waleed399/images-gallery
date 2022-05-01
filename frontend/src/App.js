@@ -24,7 +24,7 @@ function App() {
   }
 
   useEffect(() => getSavedImages(), [])
-
+  
   const HandleSearchSubmit = async (e) => {
     e.preventDefault();
    
