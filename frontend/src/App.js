@@ -24,7 +24,7 @@ function App() {
   }
 
   useEffect(() => getSavedImages(), [])
-  
+
   const HandleSearchSubmit = async (e) => {
     e.preventDefault();
    
@@ -37,6 +37,21 @@ function App() {
 
     setWord("");
   };
+
+  const handleSaveImage = async (id) =>{
+    const imageToSave = images.find((image) => image.id === id);
+    imageToSave.saved = true;
+
+    try {
+      const res = await axios.post(`${API_URL}/images`, imageToSave);
+      if(res.data && res.data.inserted_id) {
+        SetImages(images.map((image) => 
+        image.id === id ? {...image, saved: true} : image));
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   const HandleDeleteImage = (id) => {
     SetImages(images.filter((image) => image.id !== id));
@@ -51,7 +66,9 @@ function App() {
           <Row xs={1} md={2} lg={3}>
             {images.map((image, i) => (
               <Col key={i} className="pb-3">
-                <ImageCard image={image} deleteImage={HandleDeleteImage} />
+                <ImageCard image={image} 
+                deleteImage={HandleDeleteImage} 
+                saveImage={handleSaveImage}/>
               </Col>
             ))}
           </Row>
