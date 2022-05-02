@@ -7,17 +7,20 @@ import Search from "./components/Search";
 import ImageCard from "./components/ImageCard";
 import { Container, Row, Col } from "react-bootstrap";
 import Welcome from "./components/welcome";
+import Spinner from "./components/Spinner";
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://127.0.0.1:5050'
 
 function App() {
   const [word, setWord] = useState("");
   const [images, SetImages] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const getSavedImages = async () =>{
     try {
       const res = await axios.get(`${API_URL}/images`)
       SetImages(res.data || []);
+      setLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -71,6 +74,7 @@ function App() {
   return (
     <div>
       <Header title="Images Gallery" />
+      {loading ? <Spinner /> : <>
       <Search word={word} setWord={setWord} HandleSubmit={HandleSearchSubmit} />
       <Container className="mt-4">
         {images.length ? (
@@ -86,7 +90,9 @@ function App() {
         ) : (
           <Welcome />
         )}
-      </Container>
+      </Container></>}
+      
+      
     </div>
   );
 }
