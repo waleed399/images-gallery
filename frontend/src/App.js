@@ -53,7 +53,9 @@ function App() {
     }
   }
 
-  const HandleDeleteImage = (id) => {
+  const HandleDeleteImage = async (id) => {
+
+    const imageToDelete = images.find((image) => image.id === id);
     SetImages(images.filter((image) => image.id !== id));
   };
 
